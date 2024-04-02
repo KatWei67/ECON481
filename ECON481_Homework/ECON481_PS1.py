@@ -78,5 +78,9 @@ def prob_k_heads(n: int, k: int) -> float:
     for i in range(k+1, n+1):
         n_choose_k *= i
     n_choose_k /= n_minus_k_fac
-    
+    p=1/2
+    return n_choose_k*(p**k)*(p**(n-k))
+
+print(prob_k_heads(1,1))
+
 
