@@ -34,7 +34,6 @@ def evens_and_odds(n: int) -> dict:
 
     return {'evens': evens, 'odds': odds}
 
-
 ### Exercise 3
 from typing import Union
 from datetime import datetime
@@ -56,4 +55,28 @@ def time_diff(date_1: str, date_2: str, out: str) -> Union[str,float]:
         return f"There are {different_days} between the two dates"
     
 #### Exercise 4
+# start at the last item in list, get every items and go backwards to the first item
+def reverse(in_list: list) -> list:
+    """
+    This function will return a list of the argument in reverse order.
+
+    For example, reverse(['a', 'b', 'c']) should return ['c', 'b', 'a']
+    """
+    return in_list[::-1]
+
+### Exercise 5
+def prob_k_heads(n: int, k: int) -> float:
+    """
+    For natural n and k with n>k, return the probability of getting k heads from n flips
+
+    For example, prob_k_heads(1,1) should return .5
+    """
+    n_minus_k_fac = 1
+    for i in range(1, n-k+1):
+        n_minus_k_fac *= i
+    n_choose_k = 1
+    for i in range(k+1, n+1):
+        n_choose_k *= i
+    n_choose_k /= n_minus_k_fac
+    
 
