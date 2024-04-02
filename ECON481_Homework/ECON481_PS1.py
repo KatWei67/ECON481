@@ -81,6 +81,5 @@ def prob_k_heads(n: int, k: int) -> float:
     p=1/2
     return n_choose_k*(p**k)*(p**(n-k))
 
-print(prob_k_heads(1,1))
 
 
