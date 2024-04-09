@@ -6,7 +6,7 @@ def github() -> str:
     Some docstrings.
     """
 
-    # return "https://github.com/<user>/<repo>/blob/main/<filename.py>"
+    return "https://github.com/KatWei67/ECON481/blob/main/ECON481_Homework/ECON481_PS2.py"
 
 ### Exercise 1
 def simulate_data(seed: int=481) -> tuple: # seed default to 481
