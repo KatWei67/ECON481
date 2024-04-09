@@ -1,8 +1,8 @@
 from asyncio import log
 import numpy as np
 from math import exp, pi, sqrt
-
 import scipy as sp
+
 ### Exercise 0
 def github() -> str:
     """
@@ -55,6 +55,36 @@ def estimate_mle(y: np.array, X: np.array) -> np.array:
     beta3, beta4 (in that order).
     """  
     # error = y - beta0 -beta1*x1 - beta2*x2 - beta3*x3
+    
+    # Adding intercept
+    X_int = np.concatenate(
+    [np.ones(X.shape[0]).reshape(-1,1), X,], axis = 1)
+
+    # calculate probability of errors
+    def neg_ll(beta, y, X):
+        errors = y - X @ beta
+    
+        return np.sum(errors ** 2) / 2 # divide 2 because error is normal distribution
+    
+    # Initial guess for the coefficients (including beta0 for the intercept)
+    beta_initial = np.zeros(X_int.shape[1])
+    
+    # Perform the optimization using Nelder-Mead method
+    result = sp.optimize.minimize(
+        neg_ll, # the SSE function
+        beta_initial, # starting initial guess (beta=0)
+        args=(y, X_int), # additional parameters passed to SSE
+        method='Nelder-Mead')
+
+    # Return the optimized coefficients
+    return result.x
+
+
+### Exercise 3
+def estimate_ols(y: np.array, X: np.array) -> np.array:
+    """
+    Some docstrings.
+    """
     # Adding intercept
     X_int = np.concatenate(
     [np.ones(X.shape[0]).reshape(-1,1), X,], axis = 1)
@@ -69,26 +99,11 @@ def estimate_mle(y: np.array, X: np.array) -> np.array:
     beta_initial = np.zeros(X_int.shape[1])
     
     # Perform the optimization using Nelder-Mead method
-    result = sp.optimize(
+    result = sp.optimize.minimize(
         SSE, # the SSE function
         beta_initial, # starting initial guess (beta=0)
         args=(y, X_int), # additional parameters passed to SSE
         method='Nelder-Mead')
-   
+
     # Return the optimized coefficients
     return result.x
-
-
-### Exercise 3
-def estimate_ols(y: np.array, X: np.array) -> np.array:
-    """
-    Some docstrings.
-    """
-    # Adding intercept
-    X_int = np.concatenate(
-    [np.ones(X.shape[0]).reshape(-1,1), X,], axis = 1)
-
-    # Calculate OLS regression coefficients
-    beta_hat = np.matmul(np.matmul(np.linalg.inv(np.matmul(np.array(X_int).transpose(), np.array(X_int))), X_int.transpose()), y)
-    
-    return beta_hat
