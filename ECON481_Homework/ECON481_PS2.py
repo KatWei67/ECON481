@@ -60,11 +60,15 @@ def estimate_mle(y: np.array, X: np.array) -> np.array:
     X_int = np.concatenate(
     [np.ones(X.shape[0]).reshape(-1,1), X,], axis = 1)
 
-    # calculate probability of errors
+    # calculate log-likelihood of errors
     def neg_ll(beta, y, X):
+        #p(ϵ_i) = 1/(2pi) * exp(-ϵ_i^2/2)
+        # The log-likelihood for an individual observation (ignoring constant factors) is:
+        # log(p(ϵ_i)) = -ϵ_i^2/2
         errors = y - X @ beta
+        # −∑log(p(ϵ_i) = ∑ ϵ_i^2/2, so divide to while return np.sum
+        return np.sum(errors ** 2) / 2  
     
-        return np.sum(errors ** 2) / 2 # divide 2 because error is normal distribution
     
     # Initial guess for the coefficients (including beta0 for the intercept)
     beta_initial = np.zeros(X_int.shape[1])
@@ -83,7 +87,10 @@ def estimate_mle(y: np.array, X: np.array) -> np.array:
 ### Exercise 3
 def estimate_ols(y: np.array, X: np.array) -> np.array:
     """
-    Some docstrings.
+    This function estimate the OLS coefficients for the simulated data.
+   
+    Return:
+    a 4*1 np.array with the coefficients (in that order).
     """
     # Adding intercept
     X_int = np.concatenate(
