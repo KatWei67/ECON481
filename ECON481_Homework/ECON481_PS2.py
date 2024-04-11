@@ -1,6 +1,5 @@
-from asyncio import log
 import numpy as np
-from math import exp, pi, sqrt
+from math import sqrt
 import scipy as sp
 
 ### Exercise 0
@@ -14,13 +13,13 @@ def github() -> str:
 ### Exercise 1
 def simulate_data(seed: int=481) -> tuple: # seed default to 481
     """
-    This function operate 1000 simulated observations via:
+    Operate 1000 simulated observations via:
     y = 5 + 3x_i1 + 2x_i2 + 6x_i3 + error_i, where
     x_i1, x_i2, x_i3 ~ N(0,2) and error_i ~ N(0,1)
     
     Return:
-     a tuple of two elements, (y,X) where y is a 1000*1 np.array and X is a 
-     1000*3 np.array.
+    A tuple of two elements, (y,X) where y is a 1000*1 np.array and X is a 
+    1000*3 np.array.
     """
     # set seed
     np.random.seed(seed)
@@ -41,76 +40,74 @@ def simulate_data(seed: int=481) -> tuple: # seed default to 481
 
 
 ### Exercise 2
-import numpy as np
-
 def estimate_mle(y: np.array, X: np.array) -> np.array:
     """
-    This function estimates the MLE paramters beta_mle for data
-    simulated as above, where model is:
-    y_i = beta0 + beta1x_i1 + beta2x_i2 + beta3x_i3 + error_i,
-    where error_i ~ N(0,1).
+    Estimate the MLE parameters beta.
+    
+    parameters:
+    y : a 1000x1 numpy array.
+    X : a 1000x3 numpy array.
+    
+    Returns:
+    A 4x1 array with the coefficients beta_0, beta_1, beta_2, beta_3 (in this order).
+    """
+    # Negative Log-Likelihood function
+    def Log_Likelihood(beta):
+        # Calculate predicted values
+        y_predicted = X @ beta[1:] + beta[0]
+        # Calculate residuals
+        residuals = y.ravel() - y_predicted.ravel()
+        # Negative log-likelihood
+        return 0.5 * np.sum(residuals ** 2)
 
-    Return:
-    return a 4*1 np.array with the coefficients beta1, beta2,
-    beta3, beta4 (in that order).
-    """  
-    # error = y - beta0 -beta1*x1 - beta2*x2 - beta3*x3
-    
-    # Adding intercept
-    X_int = np.concatenate(
-    [np.ones(X.shape[0]).reshape(-1,1), X,], axis = 1)
+    # Initial guess for the betas value
+    beta_initial = np.zeros(X.shape[1] + 1)
 
-    # calculate log-likelihood of errors
-    def neg_ll(beta, y, X):
-        #p(ϵ_i) = 1/(2pi) * exp(-ϵ_i^2/2)
-        # The log-likelihood for an individual observation (ignoring constant factors) is:
-        # log(p(ϵ_i)) = -ϵ_i^2/2
-        errors = y - X @ beta
-        # −∑log(p(ϵ_i) = ∑ ϵ_i^2/2, so divide to while return np.sum
-        return np.sum(errors ** 2) / 2  
-    
-    
-    # Initial guess for the coefficients (including beta0 for the intercept)
-    beta_initial = np.zeros(X_int.shape[1])
-    
-    # Perform the optimization using Nelder-Mead method
-    result = sp.optimize.minimize(
-        neg_ll, # the SSE function
-        beta_initial, # starting initial guess (beta=0)
-        args=(y, X_int), # additional parameters passed to SSE
-        method='Nelder-Mead')
+    # minimize the residuals
+    result = sp.optimize.minimize(Log_Likelihood, beta_initial, method='L-BFGS-B')
 
-    # Return the optimized coefficients
-    return result.x
+    # Return the estimated parameters (beta)
+    return result.x.reshape(-1, 1)
 
 
 ### Exercise 3
-def estimate_ols(y: np.array, X: np.array) -> np.array:
+def estimate_ols(y: np.array, X: np.array, iterations: int = 1000, learning_rate: float = 0.01) -> np.array:
     """
-    This function estimate the OLS coefficients for the simulated data.
-   
-    Return:
-    a 4*1 np.array with the coefficients (in that order).
+    Estimate the OLS coefficients using gradient descent.
+
+    Parameters:
+    parameters:
+    y : a 1000x1 numpy array.
+    X : a 1000x3 numpy array.
+    Default 1000 iterations of running the gradient descent 
+    The learning rate for gradient descent (default is 0.01).
+
+    Returns: 
+    A 4x1 array with the coefficients beta_0, beta_1, beta_2, beta_3 (in this order).
     """
-    # Adding intercept
-    X_int = np.concatenate(
-    [np.ones(X.shape[0]).reshape(-1,1), X,], axis = 1)
+    # Add interception 
+    X_int = np.hstack((np.ones((X.shape[0], 1)), X))
+    
+    # Initialize beta coefficients to zero
+    beta = np.zeros((X_int.shape[1], 1))
 
-    # calculate probability of errors
-    def SSE(beta, y, X):
-        errors = y - X @ beta
+    # Gradient Descent to minimize the cost function
+    for _ in range(iterations):
+        # Calculate the predictions
+        predictions = X_int @ beta
+        
+        # Calculate the error
+        error = predictions - y
+        
+        # Calculate the gradient
+        gradient = X_int.T @ error
+        
+        # Update the coefficients (beta
+        beta -= (learning_rate / len(y)) * gradient
     
-        return np.sum(errors ** 2)
-    
-    # Initial guess for the coefficients (including beta0 for the intercept)
-    beta_initial = np.zeros(X_int.shape[1])
-    
-    # Perform the optimization using Nelder-Mead method
-    result = sp.optimize.minimize(
-        SSE, # the SSE function
-        beta_initial, # starting initial guess (beta=0)
-        args=(y, X_int), # additional parameters passed to SSE
-        method='Nelder-Mead')
+    return beta
 
-    # Return the optimized coefficients
-    return result.x
+# check
+# y, X = simulate_data(seed=481)
+# print(estimate_mle(y,X))
+# print(estimate_ols(y,X))
