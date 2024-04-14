@@ -1,10 +1,10 @@
 ### Exercise 0
 def github() -> str:
     """
-    Some docstrings.
+    This return a link to my solutions on Github.
     """
 
-    return "https://github.com/<user>/<repo>/blob/main/<filename.py>"
+    return "https://github.com/KatWei67/ECON481/blob/main/ECON481_Homework/ECON481_PS3.py"
 
 ### Exercise 1
 import pandas as pd
