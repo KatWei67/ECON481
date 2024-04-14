@@ -71,7 +71,7 @@ def estimate_mle(y: np.array, X: np.array) -> np.array:
 
 
 ### Exercise 3
-def estimate_ols(y: np.array, X: np.array, iterations: int = 1000, learning_rate: float = 0.01) -> np.array:
+def estimate_ols(y: np.array, X: np.array) -> np.array:
     """
     Estimate the OLS coefficients using gradient descent.
 
@@ -92,7 +92,7 @@ def estimate_ols(y: np.array, X: np.array, iterations: int = 1000, learning_rate
     beta = np.zeros((X_int.shape[1], 1))
 
     # Gradient Descent to minimize the cost function
-    for _ in range(iterations):
+    for _ in range(1000):
         # Calculate the predictions
         predictions = X_int @ beta
         
@@ -103,11 +103,11 @@ def estimate_ols(y: np.array, X: np.array, iterations: int = 1000, learning_rate
         gradient = X_int.T @ error
         
         # Update the coefficients (beta
-        beta -= (learning_rate / len(y)) * gradient
+        beta -= (10000 / len(y)) * gradient
     
     return beta
 
 # check
-# y, X = simulate_data(seed=481)
+y, X = simulate_data(seed=481)
 # print(estimate_mle(y,X))
-# print(estimate_ols(y,X))
+print(estimate_ols(y,X))
