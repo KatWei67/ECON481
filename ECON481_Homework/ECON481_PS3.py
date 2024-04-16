@@ -25,11 +25,11 @@ def import_yearly_data(years: list) -> pd.DataFrame:
     data_frames = []
     
     # Set the path to the directory containing the Excel files
-    base_directory = "EPA/"  # Adjust this path if file locate in other 
+    # base_directory = "EPA/"  # Adjust this path if file locate in other 
 
     for year in years:
         # Build the path string to the specific Excel file
-        file_path = f"{base_directory}ghgp_data_{year}.xlsx"
+        file_path = f"https://lukashager.netlify.app/econ-481/data/ghgp_data_{year}.xlsx"
 
         # Load the Excel file with headers starting from the fourth row
         df = pd.read_excel(file_path, sheet_name='Direct Emitters', skiprows=3, header=0)
@@ -64,10 +64,10 @@ def import_parent_companies(years: list) -> pd.DataFrame:
     sheets with a new column year.
     """
     # Set the path to the directory containing the Excel files
-    base_directory = "EPA/"  # Adjust this path if file locate in other 
+    # base_directory = "EPA/"  # Adjust this path if file locate in other 
 
     # write done the file path
-    file_path = f"{base_directory}ghgp_data_parent_company_09_2023.xlsb"  # This is the single file for all years
+    file_path = "https://lukashager.netlify.app/econ-481/data/ghgp_data_parent_company_09_2023.xlsb"  # This is the single file for all years
 
     # Start with an empty list to store data 
     data_frames = []
@@ -103,11 +103,11 @@ def n_null(df: pd.DataFrame, col: str) -> int:
     Given a pd.DataFrame, for any column, return the number of null values. 
     """
     # Use isnull to check null and sum the number of null values in such column
-    return df[col].isnull().sum()
+    return int(df[col].isnull().sum())
 
 # check
 # df = import_yearly_data(years=[2021])
-# print(n_null(df, col='County'))
+# print(type(n_null(df, col='County')))
 
 ### Exercise 4
 def clean_data(emissions_data: pd.DataFrame, parent_data: pd.DataFrame) -> pd.DataFrame:
