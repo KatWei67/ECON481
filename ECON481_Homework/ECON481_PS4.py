@@ -4,7 +4,7 @@ def github() -> str:
     Return the link to github.
     """
 
-    return "https://github.com/<user>/<repo>/blob/main/<filename.py>"
+    return "https://github.com/KatWei67/ECON481/blob/main/ECON481_Homework/ECON481_PS4.py"
 
 ### Exercise 1
 import pandas as pd
