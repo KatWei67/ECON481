@@ -107,7 +107,7 @@ def n_null(df: pd.DataFrame, col: str) -> int:
 
 # check
 # df = import_yearly_data(years=[2021])
-# print(type(n_null(df, col='County')))
+# print(type(n_null(df, col='County'))) 
 
 ### Exercise 4
 def clean_data(emissions_data: pd.DataFrame, parent_data: pd.DataFrame) -> pd.DataFrame:
