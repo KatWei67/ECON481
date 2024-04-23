@@ -105,7 +105,7 @@ def autoregress(df: pd.DataFrame) -> float:
     
     return t_statistic
 
-# # check
+# # # check
 # df = load_data()
 # print(autoregress(df))
 
