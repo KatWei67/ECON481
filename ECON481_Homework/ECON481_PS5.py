@@ -4,7 +4,7 @@ def github() -> str:
     Return github link to PS5 .
     """
 
-    return "https://github.com/<user>/<repo>/blob/main/<filename.py>"
+    return "https://github.com/KatWei67/ECON481/blob/main/ECON481_Homework/ECON481_PS5.py"
 
 ### Exercise 1
 import requests
