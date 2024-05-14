@@ -1,12 +1,13 @@
+### This part code for check only.
 # from sqlalchemy import create_engine
 
-# path = '/Users/weijiaying/Desktop/ECON481/auctions.db'
+# path = '/Users/weijiaying/Desktop/ECON481/ECON481_Homework/auctions.db'
 # engine = create_engine(f'sqlite:///{path}')
 
 # from sqlalchemy import inspect
 
 # inspector = inspect(engine)
-# # print(inspector.get_table_names())
+# print(inspector.get_table_names())
 
 # import pandas as pd
 # from sqlalchemy.orm import Session
@@ -284,3 +285,4 @@ def win_perc_by_timestamp() -> str:
 
 # df = auctions.query(query)
 # print(df)
+
