@@ -32,10 +32,10 @@
 ### Exercise 0
 def github() -> str:
     """
-    Some docstrings.
+    Return a link to PS6 on github.
     """
 
-    return "https://github.com/<user>/<repo>/blob/main/<filename.py>"
+    return "https://github.com/KatWei67/ECON481/blob/main/ECON481_Homework/ECON481_PS6.py"
 
 ### Exercise 1
 def std() -> str:
